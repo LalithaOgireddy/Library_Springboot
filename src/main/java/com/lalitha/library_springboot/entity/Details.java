@@ -1,6 +1,8 @@
 package com.lalitha.library_springboot.entity;
 
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.hibernate.annotations.NotFound;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -12,9 +14,10 @@ public class Details {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String name;
 
     private LocalDate birthDate;
