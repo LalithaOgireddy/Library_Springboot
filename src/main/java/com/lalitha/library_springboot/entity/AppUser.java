@@ -22,7 +22,7 @@ public class AppUser {
 
     private LocalDate regDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Details userDetails;
 
     protected AppUser() {}
