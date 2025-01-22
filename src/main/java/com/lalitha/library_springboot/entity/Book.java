@@ -1,11 +1,10 @@
 package com.lalitha.library_springboot.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Book {
@@ -20,16 +19,15 @@ public class Book {
 
     private int maxLoanDays;
 
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "Book_Author",
+            joinColumns = @JoinColumn(name = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    private Set<Author> authors = new HashSet<>();;
+
     protected Book() {}
 
     public Book(String isbn, String title, int maxLoanDays) {
-        this.isbn = isbn;
-        this.title = title;
-        this.maxLoanDays = maxLoanDays;
-    }
-
-    public Book(int id, String isbn, String title, int maxLoanDays) {
-        this.id = id;
         this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
@@ -63,6 +61,28 @@ public class Book {
         this.maxLoanDays = maxLoanDays;
     }
 
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
+    public void addAuthor(Author author) {
+        if(!authors.contains(author)) {
+            this.authors.add(author);
+            //author.addWrittenBook(this);
+        }
+    }
+
+    public void removeAuthor(Author author) {
+        if(authors.contains(author)) {
+            this.authors.remove(author);
+            //author.removeWrittenBook(this);
+        }
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -70,18 +90,7 @@ public class Book {
                 ", isbn='" + isbn + '\'' +
                 ", title='" + title + '\'' +
                 ", maxLoanDays=" + maxLoanDays +
+                ", authors=" + authors +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return id == book.id && maxLoanDays == book.maxLoanDays && Objects.equals(isbn, book.isbn) && Objects.equals(title, book.title);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, isbn, title, maxLoanDays);
     }
 }
