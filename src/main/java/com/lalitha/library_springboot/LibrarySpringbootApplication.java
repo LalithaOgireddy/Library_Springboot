@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootApplication
 public class LibrarySpringbootApplication {
@@ -21,7 +22,7 @@ public class LibrarySpringbootApplication {
         SpringApplication.run(LibrarySpringbootApplication.class, args);
     }
 
-    @Bean
+    /*@Bean
     CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, BookLoanRepository bookLoanRepository) {
         return args -> {
             Details details = new Details("lalitha@lexicon.com","Lalitha", LocalDate.of(2000,01,01));
@@ -33,6 +34,13 @@ public class LibrarySpringbootApplication {
             bookLoanRepository.save(bl1);
 
             System.out.println("Book loan created");
+            List<BookLoan> bookLoans = bookLoanRepository.findBookLoansDue();
+            bookLoans.forEach(System.out::println);
+
+            System.out.println("Book loans update");
+
+            bookLoanRepository.markBookLoanAsReturnedByLoanId(bl1.getId());
+            System.out.println(bl1);
         };
-    }
+    }*/
 }
