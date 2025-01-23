@@ -10,10 +10,14 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false)
     private String firstName;
+
+    @Column(nullable = false)
     private String lastName;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = "Book_Author",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
@@ -60,18 +64,13 @@ public class Author {
     }
 
     public void addWrittenBook(Book book) {
-        if(!writtenBooks.contains(book)) {
             writtenBooks.add(book);
-            //book.addAuthor(this);
-        }
-
+            book.getAuthors().add(this);
     }
 
     public void removeWrittenBook(Book book) {
-        if(writtenBooks.contains(book)) {
             writtenBooks.remove(book);
-            //book.removeAuthor(this);
-        }
+            book.getAuthors().remove(this);
     }
 
     @Override
@@ -80,7 +79,7 @@ public class Author {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", writtenBooks=" + writtenBooks +
+
                 '}';
     }
 }

@@ -13,16 +13,14 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(unique = true, nullable = false)
     private String isbn;
-
+    @Column(nullable = false)
     private String title;
 
     private int maxLoanDays;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "Book_Author",
-            joinColumns = @JoinColumn(name = "author_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    @ManyToMany(mappedBy = "writtenBooks", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     private Set<Author> authors = new HashSet<>();;
 
     protected Book() {}
@@ -67,20 +65,6 @@ public class Book {
 
     public void setAuthors(Set<Author> authors) {
         this.authors = authors;
-    }
-
-    public void addAuthor(Author author) {
-        if(!authors.contains(author)) {
-            this.authors.add(author);
-            //author.addWrittenBook(this);
-        }
-    }
-
-    public void removeAuthor(Author author) {
-        if(authors.contains(author)) {
-            this.authors.remove(author);
-            //author.removeWrittenBook(this);
-        }
     }
 
     @Override
