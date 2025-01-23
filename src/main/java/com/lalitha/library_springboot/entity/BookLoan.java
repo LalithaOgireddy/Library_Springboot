@@ -20,7 +20,9 @@ public class BookLoan {
     private boolean returned;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private AppUser borrower;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Book book;
 

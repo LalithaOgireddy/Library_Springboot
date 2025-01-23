@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -24,6 +26,10 @@ public class AppUser {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Details userDetails;
+
+    @OneToMany(mappedBy = "borrower")
+    List<BookLoan> bookLoanList = new ArrayList<>();
+
 
     protected AppUser() {}
 
@@ -80,6 +86,23 @@ public class AppUser {
 
     public void setUserDetails(Details userDetails) {
         this.userDetails = userDetails;
+    }
+
+    public List<BookLoan> getBookLoanList() {
+        return bookLoanList;
+    }
+
+    public void setBookLoanList(List<BookLoan> bookLoanList) {
+        this.bookLoanList = bookLoanList;
+    }
+
+    public void addBookLoan(BookLoan bookLoan) {
+        bookLoanList.add(bookLoan);
+        bookLoan.setBorrower(this);
+    }
+    public void removeCourse(BookLoan bookLoan) {
+        bookLoanList.remove(bookLoan);
+        bookLoan.setBorrower(null);
     }
 
     @Override
