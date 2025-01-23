@@ -33,15 +33,7 @@ public class BookLoan {
         this.dueDate = dueDate;
         this.returned = returned;
         this.borrower = borrower;
-        this.book = book;
-    }
-    public BookLoan(int id, LocalDate loanDate, LocalDate dueDate, boolean returned, AppUser borrower, Book book) {
-        this.id = id;
-        this.loanDate = loanDate;
-        this.dueDate = dueDate;
-        this.returned = returned;
-        this.borrower = borrower;
-        this.book = book;
+        this.setBook(book);
     }
 
     public int getId() {
@@ -85,7 +77,7 @@ public class BookLoan {
     }
 
     public void setBook(Book book) {
-        this.book = book;
+        if(book.isAvailable()) this.book = book;
     }
 
     @Override

@@ -19,16 +19,24 @@ public class Book {
     private String title;
 
     private int maxLoanDays;
+    private boolean available;
 
     @ManyToMany(mappedBy = "writtenBooks", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     private Set<Author> authors = new HashSet<>();;
 
     protected Book() {}
 
+    public Book(String isbn, String title, int maxLoanDays, boolean available) {
+        this.isbn = isbn;
+        this.title = title;
+        this.maxLoanDays = maxLoanDays;
+        this.available = available;
+    }
     public Book(String isbn, String title, int maxLoanDays) {
         this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
+        this.available = true;
     }
 
     public int getId() {
@@ -57,6 +65,14 @@ public class Book {
 
     public void setMaxLoanDays(int maxLoanDays) {
         this.maxLoanDays = maxLoanDays;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     public Set<Author> getAuthors() {

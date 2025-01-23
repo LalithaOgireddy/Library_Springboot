@@ -27,7 +27,7 @@ public class AppUser {
     @OneToOne(cascade = CascadeType.ALL)
     private Details userDetails;
 
-    @OneToMany(mappedBy = "borrower")
+    @OneToMany(mappedBy = "borrower",cascade = CascadeType.ALL)
     List<BookLoan> bookLoanList = new ArrayList<>();
 
 
@@ -99,10 +99,12 @@ public class AppUser {
     public void addBookLoan(BookLoan bookLoan) {
         bookLoanList.add(bookLoan);
         bookLoan.setBorrower(this);
+        bookLoan.getBook().setAvailable(false);
     }
-    public void removeCourse(BookLoan bookLoan) {
+    public void removeBookLoan(BookLoan bookLoan) {
         bookLoanList.remove(bookLoan);
         bookLoan.setBorrower(null);
+        bookLoan.getBook().setAvailable(false);
     }
 
     @Override
